@@ -29,17 +29,21 @@ public class ApiResponse {
 
 
     public void setBody(String body) {
+
         this.body = body;
     }
 
     public void setDuration(long duration) {
+
         this.duration = duration;
     }
     public int getStatusCode() {
+
         return statusCode;
     }
 
     public void setStatusCode(int statusCode) {
+
         this.statusCode = statusCode;
     }
 }

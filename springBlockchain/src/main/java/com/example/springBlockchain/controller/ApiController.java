@@ -5,6 +5,7 @@ import com.example.springBlockchain.model.LoadTestSummary;
 import com.example.springBlockchain.service.LoadTesterService;
 import com.example.springBlockchain.service.MonitoringSchedulerService;
 import com.example.springBlockchain.service.MonitoringService;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,17 +31,17 @@ public class ApiController {
 
     @PostMapping("/check")
     public ResponseEntity<ApiResponse> checkApi(@ModelAttribute ApiRequest request) {
-        ApiResponse result = monitoringService.checkApi(request.getUrl(), request.getKey());
-        return ResponseEntity.ok(result); // Возвращаем результат как JSON
+        // Используем метод, выбранный пользователем в запросе
+        ApiResponse result = monitoringService.checkApi(request.getUrl(), request.getKey(), request.getMethod());
+        return ResponseEntity.ok(result);
     }
 
-
     @PostMapping("/loop")
-    public ResponseEntity<String> StartApiCheck(@ModelAttribute ApiRequest request){
+    public ResponseEntity<String> StartApiLoop(@ModelAttribute ApiRequest request){
         if (request.getThreads() > 1){
-            monitoringschedulerservice.StartApiLoop(request.getUrl(), request.getKey(), request.getThreads());
+            monitoringschedulerservice.StartApiLoop(request.getUrl(), request.getKey(), request.getThreads(), request.getMethod());
         }
-        else {monitoringschedulerservice.StartApiLoop(request.getUrl(), request.getKey(), 0);}
+        else {monitoringschedulerservice.StartApiLoop(request.getUrl(), request.getKey(), 0, request.getMethod());}
 
         return ResponseEntity.ok("loop started.");
     }
@@ -48,8 +49,8 @@ public class ApiController {
     @PostMapping("/treadTest")
     public ResponseEntity<LoadTestSummary> startThreadTest(@ModelAttribute ApiRequest request) {
         int threads = request.getThreads() > 0 ? request.getThreads() : 1;
-        LoadTestSummary summary = loadtesterservice.LoadTester(request.getKey(), request.getUrl(), threads);
-        return ResponseEntity.ok(summary); // Возвращаем результат как JSON
+        LoadTestSummary summary = loadtesterservice.LoadTester(request.getKey(), request.getUrl(), threads, request.getMethod());
+        return ResponseEntity.ok(summary);
     }
 
 
@@ -58,6 +59,16 @@ public class ApiController {
         private String url;
         private String key;
         private int threads;
+        private HttpMethod method;
+
+        public HttpMethod getMethod(){
+            return method;
+        }
+
+        public void setMethod(HttpMethod method) {
+
+            this.method = method;
+        }
 
         public String getUrl() {
 

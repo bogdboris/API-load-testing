@@ -4,7 +4,6 @@ package com.example.springBlockchain.service;
 import com.example.springBlockchain.model.ApiResponse;
 import com.example.springBlockchain.model.LoadTestResult;
 import com.example.springBlockchain.model.LoadTestSummary;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class LoadTesterService {
         this.monitoringservice = monitoringservice;
     }
 
-    public LoadTestSummary LoadTester(String key, String url, int threads, HttpMethod method) {
+    public LoadTestSummary LoadTester(String key, String url, int threads) {
 
 
         ExecutorService executor = Executors.newFixedThreadPool(threads);
@@ -31,7 +30,7 @@ public class LoadTesterService {
         List<LoadTestResult> results = new ArrayList<>();
 
         for (int i = 0; i < threads; i++) {
-            futures.add(executor.submit(() -> monitoringservice.checkApi(url, key, method)));
+            futures.add(executor.submit(() -> monitoringservice.checkApi(url, key)));
         }
 
         int totalSuccess = 0;
