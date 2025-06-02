@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Комментарии</title>
+</head>
+<body>
+<h1>Оставьте комментарий</h1>
+<form th:action="@{/comments}" method="post">
+    <textarea name="text"></textarea><br>
+    <button type="submit">Отправить</button>
+</form>
+
+<h2>Список комментариев</h2>
+<ul>
+    <li th:each="comment : ${comments}"
+        th:utext="${comment.text}"></li> <!-- ⚠️ Используется utext, а не text -->
+</ul>
+</body>
+</html>
