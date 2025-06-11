@@ -5,14 +5,12 @@ public class ApiResponse {
     private long duration;
     private int statusCode;
 
-    // Конструктор для успешного ответа (3 параметра)
     public ApiResponse(String body, int statusCode, long duration) {
         this.body = body;
         this.statusCode = statusCode;
         this.duration = duration;
     }
 
-    // Конструктор для ошибки (2 параметра)
     public ApiResponse(String errorMessage, int statusCode) {
         this.body = errorMessage;
         this.statusCode = statusCode;
